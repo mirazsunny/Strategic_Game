@@ -1,0 +1,20 @@
+Let's assume that a node's balance is 100, a warehouse's balance is 10000.
+Assuming the normal(honest) payoff to be 5, 500, 500 for N, PS, NS and
+         the dishonest payoff (or penalty) to be -100 (or -inf), -10000 (or -inf), -10000 (or -inf) for N, PS, NS as well as the forfeited balance being redistributed among honest N, PS,
+		 
+g[0, 0, 0] = [5, 500, 500]
+g[0, 0, 1] = [5, 500, -10000]	// the forfeited balance of this dishonest NS may be redistributed later to the honest warehouse (and the honest node).
+g[0, 1, 0] = [5 + 10000 / 2, -10000, 500 + 10000 / 2]	// the redistribution of the forfeited balance may not be the entire amount as seen on left.
+g[0, 1, 1] = [5, -10000, -10000]	// Node will get the reward later by the honest warehouse.
+g[1, 0, 0] = [-100, 500, 500 + 100]	// Or NS may get a portion of the forfeited balance of the dishonest node.
+g[1, 0, 1] = [-100, 500, -10000]
+g[1, 1, 0] = [-100, -10000, 500 + (100 + 10000)]	// Or portion of the forfeited balance.
+g[1, 1, 1] = [-100, -10000, -10000]	// Done later by the honest warehouse (and the honest node).
+
+g1 must be for the case when there is no honest warehouse except the current selectors (which may be dishonest of course).
+g1[0, 0, 1] = [0, -10000, 500 + 10000 / x]	// x = # of warehouses (they must colluding, so the forfeited balance must be distributed among them. One thing to note here is that the honest warehouse is gone, so there is no honest warehouse left in the system which leads to the situation that g1[0, 0, 1] is not a feasable condition.
+g1[0, 1, 1] = [0, 500, 500]
+g1[1, 0, 1] = [5, -10000, 500 + 10000 / (x + 1)]	// Similar to g1[0, 0, 1], the forfeited balance of the honest warehouse must be distributed among the wareshouses and the dishonest node. Again there will be no more honest warehouse in the system.
+g1[1, 1, 1] = [-100, 500, 500 + 100 / x]	// One dishonest (colluding) node will be forfeited and removed from the system.
+
+In case of no additional warehouses, the system will shrink down by removing the honest warehouse or a dishonest node every time, eventually leaving only dishonest warehouses and honest nodes who can't earn any payoff and hence leaves the system. In other words, this equilibrium will lead to the collapse of the system which is essentially a big minus for the dishonest warehouses/nodes.
